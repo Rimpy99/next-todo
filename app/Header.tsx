@@ -1,21 +1,30 @@
 'use client'
 
+import { useState } from 'react';
+
+import Modal from './Modal';
+
 import { MdAddBox } from 'react-icons/md';
 
-type Props = {
-    setIsModalOpen: React.Dispatch<React.SetStateAction<any>>,
-}
 
-export default function Header({setIsModalOpen}: Props){
+
+export default function Header(){
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return(
         <>
-            <MdAddBox 
-                color='#E9AFA3' 
-                size='70' 
-                className='my-5 mx-5 cursor-pointer'
-                onClick={() => setIsModalOpen(true)}
-            />
+            <div>
+                <MdAddBox 
+                    color='#E9AFA3' 
+                    size='70' 
+                    className='my-5 mx-5 cursor-pointer'
+                    onClick={() => setIsModalOpen(true)}
+                />
+            </div>
+            {
+                isModalOpen && <Modal setIsModalOpen={setIsModalOpen}/>
+            }
         </>
     )
 }

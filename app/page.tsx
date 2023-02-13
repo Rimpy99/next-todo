@@ -1,19 +1,42 @@
-'use client'
-
-import { useState } from 'react';
-import styles from './page.module.css';
 
 import Header from './Header';
-import Modal from './Modal';
 
+type data = {
+  id: number,
+  title: string,
+  desc: string,
+  isImportant: boolean
+}
 
-export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+async function getTodos(){
 
-  return (
-    <>
-      <Header setIsModalOpen={setIsModalOpen}/>
-      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen}/>}
-    </>
+  const res = await fetch(`${process.env.BASE_URL}/api/getTodos`);
+
+  if(!res.ok){
+    console.log(res);
+  }
+
+  return res.json()
+
+}
+
+export default async function Home(){
+
+  const data: data[] = await getTodos();
+
+  return(
+      <>
+        <Header />
+        <div>
+          {data && data.map((todo: data) => (
+              <div 
+                  className='bg-emerald-900 inline-block text-white py-6 px-10 text-lg my-10'
+                  key={`post-${todo.id}`}
+              >
+                  {todo.title}
+              </div>
+          ))}
+        </div>
+      </>
   )
 }
